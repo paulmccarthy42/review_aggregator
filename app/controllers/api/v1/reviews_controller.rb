@@ -1,6 +1,7 @@
 class Api::V1::ReviewsController < ApplicationController
   def index
-    render json: review_params
+    page = Nokogiri::HTML(open(review_params))
+    render json: page.css('div.mainReviews')
   end
 
   private
