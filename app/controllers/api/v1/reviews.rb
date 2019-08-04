@@ -1,5 +1,4 @@
 # To do:
-# 3. Investigate other available data
 # 4. Refactor
 # 5. CORS?
 # 6. Test
@@ -26,7 +25,8 @@ module API
         get do
           begin
             error!({errors: BAD_FORMAT_ERROR}, 400) unless well_formed_request?
-            error!({errors: NO_REVIEWS_ERROR}, 500) unless url_has_reviews?(params[:base_url])
+            first_page = Nokogiri::HTML(open(params[:base_url]))
+            error!({errors: NO_REVIEWS_ERROR}, 500) unless page_has_reviews?(first_page)
 
             page_count = params[:page_count] || 1
             reviews = []
@@ -40,7 +40,7 @@ module API
               i += 1
             end
 
-            review_payload(reviews)
+            payload(reviews, first_page)
           rescue => e
             error!({error: INTERNAL_SERVER_ERROR, details: e}, 500)
           end
