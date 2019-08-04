@@ -11,6 +11,17 @@ module API::V1::Helpers::Reviews
     end
   end
 
+  def well_formed_request?
+    url_sections = params[:base_url].split('/')
+    url_sections.count == 7 &&
+      url_sections[0..3] == ['https:', '', 'www.lendingtree.com', 'reviews'] &&
+      url_sections[6].to_i.to_s == url_sections[6]
+  end
+
+  def url_has_reviews?(url)
+    !Nokogiri::HTML(open(url)).css('section.lenderReviews').empty?
+  end
+
   private
 
   def to_int(stars)
