@@ -1,8 +1,8 @@
 # To do:
+# 1. Test
+# 2. CORS?
+# 3. Documentation
 # 4. Refactor
-# 5. CORS?
-# 6. Test
-# 7. Documentation
 
 module API
   module V1
