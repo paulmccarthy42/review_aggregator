@@ -68,7 +68,7 @@ module API::V1::Helpers::Reviews
   # I'd consider storing this piece as a json in any database store.
   def review_points_payload(review)
     review.css('div.reviewPoints > div > ul > li').reduce({}) do |json, point|
-      json.merge({point.css('p').inner_html => point.css('div').inner_html})
+      json.merge({point.css('p').inner_html.parameterize(separator: '_').to_sym => point.css('div').inner_html})
     end
   end
 

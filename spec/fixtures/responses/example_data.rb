@@ -1,14 +1,31 @@
 module ExampleData
-  def self.expected_valid_data
+  def self.expected_valid_lender_data
+    {
+      name: "First Midwest Bank",
+      headline_numbers: {
+        recommend_pct: 99,
+        average_stars: 4.9,
+        count_reviews: 1861,
+        ratings_breakdown: {
+          interest_rates_pct: 95.4,
+          fees_and_closing_costs_pct: 93.2,
+          responsiveness_pct: 98.6,
+          customer_service_pct: 98.8
+        }
+      }
+    }
+  end
+
+  def self.expected_valid_review_data
     [{:author=>"Karen",
      :content=>
       "Fast contact, easy document process, fast turn around and funds distribution. Contacting agent was professional and thorough without being overbearing ",
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Refinance",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Refinance",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Fast, easy, professional service "},
     {:author=>"Therese",
@@ -17,9 +34,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Personal Loan",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Personal Loan",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Very satisfied with our experience"},
     {:author=>"Dave",
@@ -28,9 +45,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Personal Loan",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Personal Loan",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"it. was a good experience"},
     {:author=>"Whitney",
@@ -39,9 +56,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Refinance",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Refinance",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Fantastic Bank"},
     {:author=>"Mary",
@@ -50,9 +67,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Debt Settlement/Credit Repair",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Debt Settlement/Credit Repair",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Wonderful experience!"},
     {:author=>"Phong",
@@ -61,9 +78,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Personal Loan",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Personal Loan",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Excellent services"},
     {:author=>"William",
@@ -72,9 +89,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Personal Loan",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Personal Loan",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Responsive service"},
     {:author=>"Sharon",
@@ -83,9 +100,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Personal Loan",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Personal Loan",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Great and Prompt experince"},
     {:author=>"Lori",
@@ -94,9 +111,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Personal Loan",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Personal Loan",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Simply an easy process!"},
     {:author=>"Diana",
@@ -105,9 +122,9 @@ module ExampleData
      :date=>"August 2019",
      :recommended=>true,
      :review_points=>
-      {"Closed with Lender:"=>"Yes",
-       "Loan Type:"=>"Personal Loan",
-       "Review Type:"=>"Lender Review"},
+      {:closed_with_lender=>"Yes",
+       :loan_type=>"Personal Loan",
+       :review_type=>"Lender Review"},
      :stars=>5.0,
      :title=>"Loan"}]
   end

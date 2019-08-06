@@ -104,20 +104,7 @@ RSpec.describe API::V1::Helpers::Reviews do
     context 'when handling expected page format' do
       let(:url) { "#{Rails.root}/spec/fixtures/pages/valid_page.html" }
       it 'returns expected data in expected format' do
-        expect(endpoint.lender_payload(page)).to eq({
-          name: "First Midwest Bank",
-          headline_numbers: {
-            recommend_pct: 99,
-            average_stars: 4.9,
-            count_reviews: 1861,
-            ratings_breakdown: {
-              interest_rates_pct: 95.4,
-              fees_and_closing_costs_pct: 93.2,
-              responsiveness_pct: 98.6,
-              customer_service_pct: 98.8
-            }
-          }
-        })
+        expect(endpoint.lender_payload(page)).to eq(ExampleData.expected_valid_lender_data)
       end
     end
 
@@ -143,7 +130,7 @@ RSpec.describe API::V1::Helpers::Reviews do
       let(:reviews) { page.css('div.mainReviews') }
       it 'returns expected data in expected format' do
         returned_reviews = endpoint.review_payload(reviews)
-        expect(returned_reviews).to eq(ExampleData.expected_valid_data)
+        expect(returned_reviews).to eq(ExampleData.expected_valid_review_data)
       end
     end
 
