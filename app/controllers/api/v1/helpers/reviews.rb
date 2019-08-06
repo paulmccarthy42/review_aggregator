@@ -1,7 +1,7 @@
 module API::V1::Helpers::Reviews
 
   # confirms that 
-  # 1. url begins with https://www.lendingtree.com/reviews/
+  # 1. url begins with https://www.lendingtree.com/reviews/ (https is necessary for nokogiri to function)
   # 2. url route can be converted to https://www.lendingtree.com/reviews/:credit_type/:company_slug/:company_id
   # 3. the last part of the url is wholly an integer, since extra query params 
   #  at the end of the url could affect the multiple page loading function

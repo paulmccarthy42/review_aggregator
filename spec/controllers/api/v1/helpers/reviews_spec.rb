@@ -1,16 +1,63 @@
 require 'rails_helper'
 require_relative '../../../../fixtures/responses/example_data'
 
+class Endpoint
+  include API::V1::Helpers::Reviews
+  def params ; end
+end
+
 RSpec.describe API::V1::Helpers::Reviews do
-  let(:endpoint) { Class.new { include API::V1::Helpers::Reviews }.new }
+  let(:endpoint) { Endpoint.new }
   let(:mocked_params) { {} }
   let(:page) { Nokogiri::HTML(open(url)) }
   let(:url) { "#{Rails.root}/spec/fixtures/pages/valid_page_no_reviews.html" }
   let(:reviews) { [] }
+  let(:params) { {} }
 
-  # before(:each) { allow(endpoint).to receive(:params) {mocked_params}}
-  
+  before(:each) do
+    allow(endpoint).to receive(:params) { params }
+  end
+
   describe 'well_formed_request?' do
+    context 'when url matches expectations' do
+      let(:params) { { base_url: 'https://www.lendingtree.com/reviews/personal/first-midwest-bank/52903183'} }
+      it { expect(endpoint.well_formed_request?).to be true}
+    end
+
+    context 'when url missing https' do
+      let(:params) { { base_url: 'www.lendingtree.com/reviews/personal/first-midwest-bank/52903183'} }
+      it { expect(endpoint.well_formed_request?).to be false}
+    end
+
+    context 'when url missing https://www' do
+      let(:params) { { base_url: 'lendingtree.com/reviews/personal/first-midwest-bank/52903183'} }
+      it { expect(endpoint.well_formed_request?).to be false}
+    end
+
+    context 'when url is for wrong site' do
+      let(:params) { { base_url: 'https://www.creditkarma.com/reviews/personal/first-midwest-bank/52903183'} }
+      it { expect(endpoint.well_formed_request?).to be false}
+    end
+
+    context 'when url is missing a segment' do
+      let(:params) { { base_url: 'https://www.lendingtree.com/reviews/first-midwest-bank/52903183'} }
+      it { expect(endpoint.well_formed_request?).to be false}
+    end
+
+    context 'when url has query params' do
+      let(:params) { { base_url: 'https://www.lendingtree.com/reviews/personal/first-midwest-bank/52903183?foo=bar'} }
+      it { expect(endpoint.well_formed_request?).to be false}
+    end
+
+    context 'when url has query params' do
+      let(:params) { { base_url: 'https://www.lendingtree.com/reviews/personal/first-midwest-bank/52903183?foo=bar'} }
+      it { expect(endpoint.well_formed_request?).to be false}
+    end
+
+    context 'when Lendingtree lender id is not an integer' do
+      let(:params) { { base_url: 'https://www.lendingtree.com/reviews/personal/first-midwest-bank/52903183x'} }
+      it { expect(endpoint.well_formed_request?).to be false}
+    end
 
   end
 
