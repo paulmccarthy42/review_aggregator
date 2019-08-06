@@ -1,6 +1,5 @@
 # To do:
 # 1. Test
-# 2. CORS?
 # 3. Documentation
 # 4. Refactor
 

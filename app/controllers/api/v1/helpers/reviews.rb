@@ -1,4 +1,5 @@
 module API::V1::Helpers::Reviews
+
   # confirms that 
   # 1. url begins with https://www.lendingtree.com/reviews/
   # 2. url route can be converted to https://www.lendingtree.com/reviews/:credit_type/:company_slug/:company_id
@@ -26,7 +27,7 @@ module API::V1::Helpers::Reviews
     {
       name: page.css('div.lenderInfo > h1').inner_html,
       headline_numbers: {
-        recommend_pct: page.css('div.recommend-text > span').first.inner_html.gsub(/\D/, '').to_i,
+        recommend_pct: recommended_pct(page),
         average_stars: star_rating_to_int(page.css('div.start-rating-reviews > span.hidden-xs').inner_html),
         count_reviews: page.css('a.reviews-count').inner_html.gsub(/\D/, '').to_i,
         ratings_breakdown: ratings_breakdown_payload(page)
@@ -52,11 +53,14 @@ module API::V1::Helpers::Reviews
     page.css('ul.rating-bar-section').first.css('li').reduce({}) do |ratings, rating_category|
       ratings.merge(
         {
-          rating_category.css('label').inner_html.parameterize(separator: '_').sub('_amp_', '_and_') + '_pct' =>
+          (rating_category.css('label').inner_html.parameterize(separator: '_').sub('_amp_', '_and_') + '_pct').to_sym =>
           rating_category.css('div.rating-bar-top').first[:style].gsub(/[^\d\.]/, '').to_f
         }
       )
     end
+  rescue => e
+    # rollbar error
+    {}
   end
 
   # these "Review points" appear to vary between lending categories, which is why I'm making
@@ -69,6 +73,17 @@ module API::V1::Helpers::Reviews
   end
 
   def star_rating_to_int(stars)
-    stars.gsub(/[()]/, '').split(' of').first.to_f
+    star_count = stars.gsub(/[()]/, '').split(' of').first
+    # In production, this logic would likely contain a call to an error reporting service
+    # like Rollbar if star_count had a non number in it.
+    # That sort of error reporting would likely be implemented throughout most of the functions outlined here.
+    star_count.to_f
+  end
+
+  def recommended_pct(page)
+    page.css('div.recommend-text > span').first.inner_html.gsub(/\D/, '').to_i
+  rescue => e
+    # rollbar error
+    0
   end
 end
