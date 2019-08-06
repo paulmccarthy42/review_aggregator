@@ -48,7 +48,7 @@ RSpec.describe API::V1::Reviews, type: :request do
 
       it 'returns expected data when endpoint accessed with valid URL' do
         get path, params: params
-        expect(response.status).to eq 500
+        expect(response.status).to eq 200
         expect(JSON.parse(response.body, {:symbolize_names => true})).to eq (
         {
           lender: ExampleData.expected_valid_lender_data,
@@ -57,7 +57,41 @@ RSpec.describe API::V1::Reviews, type: :request do
       end
 
       context 'when page_count submitted' do
+        it 'loads valid reviews from multiple pages' do
+          params[:page_count] = 3
 
+          get path, params: params
+          expect(response.status).to eq 200
+          expect(JSON.parse(response.body, {:symbolize_names => true})).to eq (
+          {
+            lender: ExampleData.expected_valid_lender_data,
+            reviews: ExampleData.expected_valid_review_data + ExampleData.partial_review_data + ExampleData.partial_review_data
+          })
+        end
+
+        it 'does not loads valid reviews past requested page count' do
+          params[:page_count] = 2
+
+          get path, params: params
+          expect(response.status).to eq 200
+          expect(JSON.parse(response.body, {:symbolize_names => true})).to eq (
+          {
+            lender: ExampleData.expected_valid_lender_data,
+            reviews: ExampleData.expected_valid_review_data + ExampleData.partial_review_data
+          })
+        end
+
+        it 'stops making web requests once it hits a page with no reviews' do
+          params[:page_count] = 5
+
+          get path, params: params
+          expect(response.status).to eq 200
+          expect(JSON.parse(response.body, {:symbolize_names => true})).to eq (
+          {
+            lender: ExampleData.expected_valid_lender_data,
+            reviews: ExampleData.expected_valid_review_data + ExampleData.partial_review_data + ExampleData.partial_review_data
+          })
+        end
       end
     end
   end
